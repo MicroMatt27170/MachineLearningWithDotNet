@@ -14,13 +14,13 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-8">
-                            <h3 class="font-weight-bold">1.00</h3>
-                            <h5>Parametro 1</h5>
+                            <h3 class="font-weight-bold">@ViewData["totalCount"]</h3>
+                            <h5>Cantidad de Predicciones</h5>
                         </div>
                         <div class="col-4">
                             <div class="card card-round bg-primary">
                                 <div class="card-body text-center">
-                                    <i class="fa fa-times fa-2x"></i>
+                                    <i class="fa fa-eye fa-2x"></i>
                                 </div>
                             </div>
                         </div>
@@ -33,13 +33,13 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-8">
-                            <h3 class="font-weight-bold">2.00</h3>
-                            <h5>Parametro 2</h5>
+                            <h3 class="font-weight-bold">@ViewData["predictionCount"]</h3>
+                            <h5>Cantidad de Productos</h5>
                         </div>
                         <div class="col-4">
                             <div class="card card-round bg-primary">
                                 <div class="card-body text-center">
-                                    <i class="fa fa-check fa-2x"></i>
+                                    <i class="fa fa-box fa-2x"></i>
                                 </div>
                             </div>
                         </div>
@@ -52,13 +52,13 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-8">
-                            <h3 class="font-weight-bold">3.00</h3>
-                            <h5>Parametro 3</h5>
+                            <h3 class="font-weight-bold">@ViewData["showResults"]</h3>
+                            <h5>Resultados Filtrados</h5>
                         </div>
                         <div class="col-4">
                             <div class="card card-round bg-primary">
                                 <div class="card-body text-center">
-                                    <i class="fa fa-plus fa-2x"></i>
+                                    <i class="fa fa-filter fa-2x"></i>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
             </div>
         </div>
     </div>
-    <div class="row mb-3 justify-content-center">
+    @*<div class="row mb-3 justify-content-center">
         <div class="col-12 col-md-8">
             <div class="card card-shadow">
                 <div class="card-body">
@@ -75,40 +75,34 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
     <div class="row mb-3">
         <div class="col-6">
             <h2 class="text-poppins text-primary font-weight-bold">Registros</h2>
         </div>
-        <div class="col-6 text-right">
+        @*<div class="col-6 text-right">
             <div class="btn btn-primary btn-shadow ripple">Descargar CSV</div>
-        </div>
+        </div>*@
         <div class="col-12">
             <div class="card card-shadow">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover display">
+                        <table class="table table-bordered table-hover display table-sm">
                             <thead>
                                 <tr>
-                                    <th>Parametro 1</th>
-                                    <th>Parametro 2</th>
-                                    <th>Parametro 3</th>
-                                    <th>Parametro 4</th>
+                                    <th>Location</th>
+                                    <th>Product</th>
+                                    <th>Date</th>
+                                    <th>Sa_quantity</th>
+                                    <th>Temp_mean</th>
+                                    <th>Temp_max</th>
+                                    <th>Temp_min</th>
+                                    <th>Sunshine_quant</th>
+                                    <th>Event</th>
+                                    <th>Price</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Dato 1</td>
-                                    <td>Dato 2</td>
-                                    <td>Dato 3</td>
-                                    <td>Dato 4</td>
-                                </tr>
-                                <tr>
-                                    <td>Dato 1</td>
-                                    <td>Dato 2</td>
-                                    <td>Dato 3</td>
-                                    <td>Dato 4</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>

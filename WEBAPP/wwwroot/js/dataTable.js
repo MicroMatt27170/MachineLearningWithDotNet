@@ -23,6 +23,20 @@ $(document).ready(function () {
                 "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
-        }
+        },
+        "serverSide": true,
+        "ajaxSource": "/Home/GetModelsJson",
+        "columns": [
+            { data: "location" },
+            { data: "product" },
+            { data: "date" },
+            { data: "sa_quantity" },
+            { data: "temp_mean" },
+            { data: "temp_max" },
+            { data: "temp_min" },
+            { data: "sunshine_quant" },
+            { data: "event" },
+            { data: "price" }
+        ]
     });
 });

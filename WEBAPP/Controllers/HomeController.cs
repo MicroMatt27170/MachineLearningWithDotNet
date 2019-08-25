@@ -18,6 +18,28 @@ namespace WEBAPP.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            var mlContext = new MLContext();
+
+            var models = new List<ModelInput>();
+
+            var mlModel = mlContext.Model.Load(GetAbsolutePath(ModelFilepath), out DataViewSchema inputSchema);
+            var predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
+
+            // Create sample data to do a single prediction with it 
+            //ModelInput sampleData = CreateSingleDataSample(mlContext, DATA_FILEPATH);
+            var dataView = mlContext.Data.LoadFromTextFile<ModelInput>(
+                                            path: DataFilepath,
+                                            hasHeader: true,
+                                            separatorChar: ',',
+                                            allowQuoting: true);
+
+            // Here (ModelInput object) you could provide new test data, hardcoded or from the end-user application, instead of the row from the file.
+            var count = mlContext.Data.CreateEnumerable<ModelInput>(dataView, false).Count();
+            var numProduct = mlContext.Data.CreateEnumerable<ModelInput>(dataView, false).GroupBy(m => m.Product).Count();
+
+            ViewData["totalCount"] = count;
+            ViewData["predictionCount"] = numProduct;
+            ViewData["showResults"] = 25;
             return View();
         }
 
@@ -53,8 +75,8 @@ namespace WEBAPP.Controllers
             return fullPath;
         }
 
-        [HttpPost]
-        public List<ModelInput> GetModelsJson(int limit = 20)
+        [HttpPost, HttpGet]
+        public object GetModelsJson(int draw, int limit = 25)
         {
             var mlContext = new MLContext();
 
@@ -74,6 +96,7 @@ namespace WEBAPP.Controllers
             // Here (ModelInput object) you could provide new test data, hardcoded or from the end-user application, instead of the row from the file.
             var sampleForPrediction = mlContext.Data.CreateEnumerable<ModelInput>(dataView, false)
                                                                         .Take(limit);
+            var count = mlContext.Data.CreateEnumerable<ModelInput>(dataView, false).Count();
 
             foreach (var m in sampleForPrediction)
             {
@@ -84,7 +107,12 @@ namespace WEBAPP.Controllers
                 models.Add(m);
             }
 
-            return models;            
+            return new {
+                recordsTotal = 10,
+                recordsFiltered = count,
+                data = models,
+                draw = draw
+            };            
         }
     }
 }
