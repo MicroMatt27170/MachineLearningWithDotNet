@@ -7,31 +7,16 @@ namespace MachineLearningWithDotNet
 {
     class Program
     {
+        //Machine Learning model to load and use for predictions
+        private const string MODEL_FILEPATH = @"MLModel.zip";
+
+        //Dataset to use for predictions 
+        private const string DATA_FILEPATH = @"D:\projects\python\mc_test\input_data_pred.csv";
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            MachineLearningWithDotNetML.ConsoleApp.ModelBuilder.CreateModel();
 
-            MLContext mlContext = new MLContext();
-            ITransformer mlModel = mlContext.Model.Load("MLModel.zip", out var modelInputSchema);
-            var predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
-
-            // Use the code below to add input data
-            var input = new ModelInput();
-            input.Location = 1193;
-            input.Product = 2;
-            input.Temp_mean = 5.51f;
-            input.Temp_max = 7.24f;
-            input.Temp_min = 3.78f;
-            input.Sunshine_quant = 285;
-            input.Event = "New Year's Day observed";
-            input.Price = 1.5f;
-
-            // input.
-
-            // Try model on sample data
-            ModelOutput result = predEngine.Predict(input);
-           
-            Console.WriteLine(result.Sa_quantity);
         }
     }
 }

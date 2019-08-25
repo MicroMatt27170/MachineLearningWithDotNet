@@ -55,7 +55,7 @@ namespace MachineLearningWithDotNetML.ConsoleApp
                                       .Append(mlContext.Transforms.Concatenate("Features", new[] { "event", "date", "location", "product", "temp_mean", "temp_max", "temp_min", "sunshine_quant", "price" }));
 
             // Set the training algorithm 
-            var trainer = mlContext.Regression.Trainers.LightGbm(new LightGbmRegressionTrainer.Options() { NumberOfIterations = 200, LearningRate = 0.3233507f, NumberOfLeaves = 16, MinimumExampleCountPerLeaf = 20, UseCategoricalSplit = true, HandleMissingValue = true, MinimumExampleCountPerGroup = 100, MaximumCategoricalSplitPointCount = 16, CategoricalSmoothing = 10, L2CategoricalRegularization = 0.1, Booster = new GradientBooster.Options() { L2Regularization = 0.5, L1Regularization = 1 }, LabelColumnName = "sa_quantity", FeatureColumnName = "Features" });
+            var trainer = mlContext.Regression.Trainers.LightGbm(new LightGbmRegressionTrainer.Options() { NumberOfIterations = 200, LearningRate = 0.1523955f, NumberOfLeaves = 55, MinimumExampleCountPerLeaf = 50, UseCategoricalSplit = true, HandleMissingValue = true, MinimumExampleCountPerGroup = 100, MaximumCategoricalSplitPointCount = 64, CategoricalSmoothing = 1, L2CategoricalRegularization = 0.1, Booster = new GradientBooster.Options() { L2Regularization = 0, L1Regularization = 1 }, LabelColumnName = "sa_quantity", FeatureColumnName = "Features" });
             var trainingPipeline = dataProcessPipeline.Append(trainer);
 
             return trainingPipeline;

@@ -9,12 +9,11 @@ using System.IO;
 using System.Linq;
 using Microsoft.ML;
 using MachineLearningWithDotNetML.Model.DataModels;
-using System.Collections.Generic;
 using System.Text;
 
 namespace MachineLearningWithDotNetML.ConsoleApp
 {
-    public class Program
+    class Program
     {
         //Machine Learning model to load and use for predictions
         private const string MODEL_FILEPATH = @"MLModel.zip";
@@ -25,13 +24,16 @@ namespace MachineLearningWithDotNetML.ConsoleApp
         static void Main(string[] args)
         {
             MLContext mlContext = new MLContext();
-
+            var output_file = @"C:\Users\mmmat\Downloads\Output.csv";
+            File.CreateText(output_file).Close();
             // Training code used by ML.NET CLI and AutoML to generate the model
             //ModelBuilder.CreateModel();
 
             ITransformer mlModel = mlContext.Model.Load(GetAbsolutePath(MODEL_FILEPATH), out DataViewSchema inputSchema);
             var predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
 
+            // Create sample data to do a single prediction with it 
+            //ModelInput sampleData = CreateSingleDataSample(mlContext, DATA_FILEPATH);
             IDataView dataView = mlContext.Data.LoadFromTextFile<ModelInput>(
                                             path: DATA_FILEPATH,
                                             hasHeader: true,
@@ -40,25 +42,24 @@ namespace MachineLearningWithDotNetML.ConsoleApp
                                             allowSparse: false);
 
             // Here (ModelInput object) you could provide new test data, hardcoded or from the end-user application, instead of the row from the file.
-            IEnumerable<ModelInput> sampleForPrediction = mlContext.Data.CreateEnumerable<ModelInput>(dataView, false);
+            var sampleForPrediction = mlContext.Data.CreateEnumerable<ModelInput>(dataView, false)
+                                                                        .ToList();
 
-            StringBuilder csv = new StringBuilder();
-            csv.Append(ModelOutput.getHeader());
+            File.AppendAllText(output_file, "location,product,date,sa_quantity,temp_mean,temp_max,temp_min,sunshine_quant,event,price");
 
             foreach (var m in sampleForPrediction)
             {
-                // Create sample data to do a single prediction with it 
-
-                // Try a single prediction
                 ModelOutput predictionResult = predEngine.Predict(m);
-
-                Console.WriteLine($"Single Prediction --> Actual value: {m.Sa_quantity} | Predicted value: {predictionResult.Score} \n");
-                
-                csv.Append()
-                //Console.WriteLine("=============== End of process, hit any key to finish ===============");
+                var score = Math.Round(predictionResult.Score);
+                score = score < 0 ? 0 : score;
+                Console.WriteLine($"Single Prediction --> Actual value: {m.Sa_quantity} | Predicted value: {score}");
+                File.AppendAllText(output_file, string.Format("\n{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", 
+                    m.Location, m.Product, m.Date, score, m.Temp_mean, m.Temp_max, m.Temp_min, m.Sunshine_quant,
+                    m.Event, m.Price == 0 ? "" : m.Price.ToString()));
             }
+            // Try a single prediction
 
-            
+            Console.WriteLine("=============== End of process, hit any key to finish ===============");
             Console.ReadKey();
         }
 
