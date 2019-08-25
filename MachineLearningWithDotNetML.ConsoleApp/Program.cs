@@ -19,12 +19,12 @@ namespace MachineLearningWithDotNetML.ConsoleApp
         private const string MODEL_FILEPATH = @"MLModel.zip";
 
         //Dataset to use for predictions 
-        private const string DATA_FILEPATH = @"D:\projects\python\mc_test\input_data_pred.csv";
+        private const string DATA_FILEPATH = @"D:\projects\jda-project\input\input_data_pred.csv";
 
         static void Main(string[] args)
         {
             MLContext mlContext = new MLContext();
-            var output_file = @"C:\Users\mmmat\Downloads\Output.csv";
+            var output_file = @"D:\projects\jda-project\Output.csv";
             File.CreateText(output_file).Close();
             // Training code used by ML.NET CLI and AutoML to generate the model
             //ModelBuilder.CreateModel();
